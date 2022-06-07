@@ -87,6 +87,7 @@ def find_length_n_paths(n, board, words):
     path which are in a length of n"""
     return _board_iterator(n, board, words, False)
 
+
 def find_length_n_words(n, board, words):
     """ a function that return a list of the word path
     which are in a length of the length of the word"""
@@ -102,29 +103,47 @@ def find_length_n_words(n, board, words):
 #
 
 def max_score_paths(board, words):
-     longest_word = max(words, key=lambda word: len(word))
+    flag = False
+    path_lst = []
+    for word in words:
+        word_lst = []
+        first_letter = word[0]
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if first_letter == board[i][j]:
+                    _find_length_n(len(word), board, word, [], word_lst, [], i, j, False)
+                    if word_lst:
+                        path_lst.append(word_lst[0])
+                        word_lst = []
+                        flag = True
+                        break
+                    else:
+                        _find_length_n(len(word), board, word, [], word_lst, [], i, j, True)
+                        if word_lst:
+                            path_lst.append(word_lst[0])
+                            word_lst = []
+                            flag = True
+                            break
+            if flag:
+                break
+    return path_lst
 
 
 
 
-
-
-
-# words = ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']
-# print(max_score_paths(b, words))
 
 def load_words_dict(filename):
     return [word.strip() for word in open(filename, 'r') if len(word.strip()) == 3]
 
-
-# board = [['N', 'I', 'D', 'I'],
-#          ['O', 'T', 'T', 'G'],
-#          ['D', 'S', 'E', 'Z'],
-#          ['K', 'QU', 'C', 'T']]
-
-# print(find_length_n_path(3, board, ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']))
-# print(find_length_n_word(3, board, words))
-#
-#
+board = [['N', 'I', 'D', 'I'],
+         ['O', 'T', 'T', 'G'],
+         ['Q', 'S', 'E', 'Z'],
+         ['U', 'QU', 'C', 'T']]
+words = [ 'ESQU', 'ZTC']
+# # print(max_score_paths(b, words))
+# print(find_length_n_paths(3, board, ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']))
+# print(find_length_n_words(3, board, words))
+#'ITS', 'GZC', 'TSC',
+print(max_score_paths(board, words))
 # v = [[(0, 1), (1, 1), (2, 1)], [(0, 1), (1, 2), (2, 1)], [(0, 3), (1, 2), (2, 1)], [(1, 1), (2, 1), (3, 2)], [(1, 2), (2, 1), (3, 2)], [(1, 3), (2, 3), (3, 2)], [(2, 2), (2, 1), (3, 1)], [(2, 3), (3, 3), (3, 2)]]
 # print(v == find_length_n_path(3, board, ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']))
