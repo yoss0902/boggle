@@ -82,21 +82,27 @@ def _board_iterator(n, board, words, flag):
     return path_lst
 
 
-def find_length_n_path(n, board, words):
+def find_length_n_paths(n, board, words):
     """ a function that return a list of the
     path which are in a length of n"""
     return _board_iterator(n, board, words, False)
 
-def find_length_n_word(n, board, words):
+def find_length_n_words(n, board, words):
     """ a function that return a list of the word path
     which are in a length of the length of the word"""
     return _board_iterator(n, board, words, True)
 
 
+# def max_score_paths(board, words):
+#     longest_word = max(words, key=lambda word: len(word))
+#     path_list = []
+#     for i in range(1, len(longest_word)):
+#         path_list + list(set(find_length_n_word(i, board, words)))
+#     return path_list
+#
+
 def max_score_paths(board, words):
-
-    pass
-
+     longest_word = max(words, key=lambda word: len(word))
 
 
 
@@ -104,15 +110,18 @@ def max_score_paths(board, words):
 
 
 
-# def read_file(filename):
-#     return [word.strip() for word in open(filename, 'r') if len(word.strip()) == 3]
+# words = ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']
+# print(max_score_paths(b, words))
+
+def load_words_dict(filename):
+    return [word.strip() for word in open(filename, 'r') if len(word.strip()) == 3]
 
 
 # board = [['N', 'I', 'D', 'I'],
 #          ['O', 'T', 'T', 'G'],
 #          ['D', 'S', 'E', 'Z'],
 #          ['K', 'QU', 'C', 'T']]
-# words = ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']
+
 # print(find_length_n_path(3, board, ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']))
 # print(find_length_n_word(3, board, words))
 #
