@@ -1,6 +1,7 @@
 import tkinter as tk
 from boggle_board_randomizer import *
 import time
+from tkinter import messagebox
 
 BUTTON_HOVER_COLOR = "gray"
 REGULAR_COLOR = "lightgray"
@@ -9,108 +10,167 @@ CUBES_BUTTON_STYLE = {"font": ("Courier", 30),
                       "borderwidth": 1,
                       "relief": tk.RAISED,
                       "bg": REGULAR_COLOR,
-                      "activebackground": BUTTON_ACTIVE_COLLOR}
+                      "activebackground": BUTTON_ACTIVE_COLLOR,
+                      "height":3, "width":6}
+
+
+class Timer:
+    def __init__(self, frame, root):
+        self.root = root
+        self.outer_frame = frame
+        self.minute_str = tk.StringVar()
+        self.second_str = tk.StringVar()
+        self.minute_str.set("03")
+        self.second_str.set("00")
+        self.time_label = tk.Label(self.outer_frame, font=("david", 30),
+                                   text=f"time : {self.minute_str.get()} : {self.second_str.get()} ",
+                                   bg=REGULAR_COLOR,
+                                   relief="ridge")
+        self.time_label.grid(row=0, column=0, rowspan=1, columnspan=1)
+
+    # def get_minutes(self):
+    #     return self.minute_str
+    #
+    # def get_seconds(self):
+    #     return self.second_str
+
+    def run_timer(self):
+        second_count = int(self.minute_str.get() * 60) + int(self.second_str.get())
+        while second_count > -1:
+            mins, secs = divmod(second_count, 60)
+            self.minute_str.set("{0:2d}".format(mins))
+            self.second_str.set("{0:2d}".format(secs))
+            self.outer_frame.update()
+            time.sleep(1)
+            if second_count == 0:
+                messagebox.showinfo("pay attention", "game is over")
+            second_count -= 1
+
+
+class Score:
+    def __init__(self, frame):
+        self.outer_frame = frame
+
+        self.score_label = tk.Label(self.outer_frame, text=f"score: ", font=("david", 30),
+                                    bg=REGULAR_COLOR, width=15, relief="ridge")
+        self.score_label.grid(row=1, column=0, rowspan=1, columnspan=1)
+
+
+class CubesBoard:
+
+    def __init__(self, frame, board):
+        self.outer_frame = frame
+        self.__board = board
+        self.buttons = {}
+        self.__middle_frame = tk.Frame(self.outer_frame)
+        self.__middle_frame.grid(row=1, column=1, rowspan=2, columnspan=1)
+
+    def get_middle_frame(self):
+        return self.__middle_frame
+
+    def get_board(self):
+        return self.__board
+
+    # def set_board(self):
+    #     self.board = randomize_board(LETTERS)
+
+    def create_button_in_middle_frame(self):
+        for i in range(BOARD_SIZE):
+            tk.Grid.columnconfigure(self.get_middle_frame(), i, weight=1)
+        for j in range(BOARD_SIZE):
+            tk.Grid.rowconfigure(self.get_middle_frame(), j, weight=1)
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
+                self.make_button(self.get_board()[i][j], i, j)
+
+    def make_button(self, button_char, row, col, rowspan=1, columnspan=1):
+        button = tk.Button(self.get_middle_frame(), text=button_char, **CUBES_BUTTON_STYLE)
+        button.grid(row=row, column=col, rowspan=rowspan, columnspan=columnspan, sticky=tk.NSEW)
+        self.buttons[button_char] = button
+
+
+class CurrentGuess:
+    def __init__(self, frame):
+        self.outer_frame = frame
+        self.current_guess_label = tk.Label(self.outer_frame, font=("david", 30), text="word var", bg=REGULAR_COLOR,
+                                            width=15, relief="ridge")
+        self.current_guess_label.grid(row=0, column=1, rowspan=1, columnspan=1)
+
+
+class GuessedWords:
+    def __init__(self, frame):
+        self.outer_frame = frame
+        self.word_list = []
+        self.word_lst_to_print = tk.StringVar(self.word_list)
+        self.found_words = tk.Label(self.outer_frame, text="word_lst", font=("Ariel", 20), width=10, relief="ridge")
+        self.found_words.grid(row=2, column=0, rowspan=1, columnspan=1)
+
+    def update_word_lst(self):
+        ...
+
+
+class StartButton:
+
+    def __init__(self, frame, timer):
+        self.outer_frame = frame
+        self.start = self.start()
+        self.start_button = tk.Button(self.outer_frame, text="start", bg="blue", font=("david", 20), width=10,
+                                      relief="ridge", command = timer.run_timer)
+        self.start_button.grid(row=0, column=2, rowspan=1, columnspan=1)
+
+    def start(self):
+        """ initialize a game and change button text and color"""
+        ...
 
 
 class BoggleGui:
 
-    def __init__(self, board):
-        self._buttons = {}
+    def __init__(self):
         self.root = tk.Tk()
+
         self.root.title("Boggle Game")
-        self.minute = tk.StringVar()
-        self.second = tk.StringVar()
-        self.minute.set("00")
-        self.second.set("03")
-        self.board = board
-        # self.time_var = tk.StringVar(0)
-        self.score_var = tk.StringVar(00)
-        self.main_window = self.root
-        self.outer_frame = tk.Frame(self.root, width=400, height=400, bg=REGULAR_COLOR,
-                                    highlightbackground=REGULAR_COLOR,
-                                    highlightthickness=5)
-        self.outer_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        # self.outer_frame.grid(column=800, row=600)
-        # self.outer_frame.geometry('800x600')
-        self.top_frame = tk.Frame(self.outer_frame)
-        self.top_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        self.__outer_frame = tk.Frame(self.root, width=400, height=400, bg=REGULAR_COLOR,
+                                      highlightbackground=REGULAR_COLOR,
+                                      highlightthickness=5)
+        self.__outer_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        self.__cubes_board = CubesBoard(self.get_outer_frame(), randomize_board(LETTERS))
+        self.__timer = Timer(self.get_outer_frame(), self.root)
+        self.__score = Score(self.get_outer_frame())
+        self.__guessed_word = GuessedWords(self.get_outer_frame())
+        self.__current_word = CurrentGuess(self.get_outer_frame())
+        self.start = StartButton(self.get_outer_frame(), self.get_timer())
 
-        self.score_label = tk.Label(self.top_frame, text=f"score: {self.score_var.get()}", font=("david", 30),
-                                    bg=REGULAR_COLOR, width=15, relief="ridge")
-        self.score_label.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.time_label = tk.Label(self.top_frame, font=("david", 30), text = f"time : {self.minute.get()}: {self.second.get()}",
-                                   bg=REGULAR_COLOR, width=15, relief="ridge")
-        self.time_label.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+        self.__instruction_lable = tk.Label(self.get_outer_frame(), text="game instruction", font=("Ariel", 15),
+                                            bg="yellow", relief="ridge")
+        self.__instruction_lable.grid(row=1, column=2, rowspan=2, columnspan=1)
+        self.__cubes_board.create_button_in_middle_frame()
 
-        self.right_frame = tk.Frame(self.outer_frame)
-        self.right_frame.pack(side=tk.RIGHT, fill=tk.BOTH)
+    # def get_root(self):
+    #     return self.__root
 
-        self.instruction_lable = tk.Label(self.right_frame, text="game instruction", font=("Ariel", 15), bg="yellow",
-                                          width=10, relief="ridge")
+    def get_outer_frame(self):
+        return self.__outer_frame
 
-        self.instruction_lable.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+    def get_cubes_board(self):
+        return self.__cubes_board
 
-        self.start_button = tk.Button(self.right_frame, text="start", bg="blue", font=("david", 20), width=10,
-                                      relief="ridge", command = self.timer)
-        self.start_button.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+    def get_timer(self):
+        return self.__timer
 
-        self.left_frame = tk.Frame(self.outer_frame)
-        self.left_frame.pack(side=tk.LEFT, fill=tk.BOTH)
-        self.found_words = tk.Label(self.left_frame, text="word_lst", font=("Ariel", 20), width=10, relief="ridge")
-        self.found_words.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+    def get_score(self):
+        return self.__score
 
-        self.middle_frame = tk.Frame(self.outer_frame)
-        self.middle_frame.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+    def get_guessed_word(self):
+        return self.__guessed_word
 
-        self.create_button_in_middle_frame()
-        # self.timer()
-    # def srart(self):
-    #     ...
-
-
-        self.temp = int(self.minute.get()) * 60 + int(self.second.get())
-    def timer(self):
-        while self.temp > -1:
-            mins, secs = divmod(self.temp, 60)
-            print(mins)
-            print(secs)
-            self.minute.set(mins)
-            self.second.set(secs)
-            self.root.after(1000, self.timer)
-            time.sleep(1)
-            self.temp -= 1
-        self.root.after(1000, self.timer)
-        #
-        # self.time_label.config(text=f"time: {minute.get()}:{second.get()}")
-        # self.time_label.after(1000, self.timer)
-        # # self.root.update()
-
-
-
-
-
-
-    def create_button_in_middle_frame(self):
-        for i in range(BOARD_SIZE):
-            tk.Grid.columnconfigure(self.middle_frame, i, weight=1)
-        for j in range(BOARD_SIZE):
-            tk.Grid.rowconfigure(self.middle_frame, j, weight=1)
-        for i in range(BOARD_SIZE):
-            for j in range(BOARD_SIZE):
-                self.make_button(self.board[i][j], i, j)
-
-    def make_button(self, button_char, row, col, rowspan=1, columnspan=1):
-        button = tk.Button(self.middle_frame, text=button_char, **CUBES_BUTTON_STYLE)
-        button.grid(row=row, column=col, rowspan=rowspan, columnspan=columnspan, sticky=tk.NSEW)
-        self._buttons[button_char] = button
+    def get_current_word(self):
+        return self.__guessed_word
 
     def run(self):
-        self.main_window.mainloop()
+        self.root.mainloop()
 
 
 board = randomize_board(LETTERS)
 # print(board)
-g = BoggleGui(board)
+g = BoggleGui()
 g.run()
-
-# text=f"time: {self.time_var.get()}",
