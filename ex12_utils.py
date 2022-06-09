@@ -1,5 +1,5 @@
-from boggle_board_randomizer import *
 from copy import deepcopy
+from time import *
 
 
 def is_valid_path(board, path, words):
@@ -94,34 +94,24 @@ def find_length_n_words(n, board, words):
     return _board_iterator(n, board, words, True)
 
 
-# def max_score_paths(board, words):
-#     longest_word = max(words, key=lambda word: len(word))
-#     path_list = []
-#     for i in range(1, len(longest_word)):
-#         path_list + list(set(find_length_n_word(i, board, words)))
-#     return path_list
-#
-
 def max_score_paths(board, words):
-    flag = False
     path_lst = []
     for word in words:
-        word_lst = []
+        flag = False
         first_letter = word[0]
         for i in range(len(board)):
             for j in range(len(board[0])):
-                if first_letter == board[i][j]:
-                    _find_length_n(len(word), board, word, [], word_lst, [], i, j, False)
+                location = board[i][j]
+                if first_letter == location:
+                    word_lst = find_length_n_paths(len(word), board, word)
                     if word_lst:
                         path_lst.append(word_lst[0])
-                        word_lst = []
                         flag = True
                         break
                     else:
-                        _find_length_n(len(word), board, word, [], word_lst, [], i, j, True)
+                        word_lst = find_length_n_words(len(word), board, word)
                         if word_lst:
                             path_lst.append(word_lst[0])
-                            word_lst = []
                             flag = True
                             break
             if flag:
@@ -132,18 +122,26 @@ def max_score_paths(board, words):
 
 
 
-def load_words_dict(filename):
-    return [word.strip() for word in open(filename, 'r') if len(word.strip()) == 3]
-
+# def load_words_dict(filename):
+#     return [word.strip() for word in open(filename, 'r') if len(word.strip()) == 3]
+start = time()
 board = [['N', 'I', 'D', 'I'],
-         ['O', 'T', 'T', 'G'],
+         ['O', 'T', 'TC', 'G'],
          ['Q', 'S', 'E', 'Z'],
          ['U', 'QU', 'C', 'T']]
-words = [ 'ESQU', 'ZTC']
-# # print(max_score_paths(b, words))
-# print(find_length_n_paths(3, board, ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']))
-# print(find_length_n_words(3, board, words))
+words = ['ESQU', 'ZTC', 'ITS']
+# print(max_score_paths(b, words))
+print(find_length_n_paths(3, board,words ))
+print(find_length_n_words(3, board, words))
+
+
+
+end = time()
+print(end-start)
+print(start)
+print(end)
 #'ITS', 'GZC', 'TSC',
-print(max_score_paths(board, words))
+# print(max_score_paths(board, words))
 # v = [[(0, 1), (1, 1), (2, 1)], [(0, 1), (1, 2), (2, 1)], [(0, 3), (1, 2), (2, 1)], [(1, 1), (2, 1), (3, 2)], [(1, 2), (2, 1), (3, 2)], [(1, 3), (2, 3), (3, 2)], [(2, 2), (2, 1), (3, 1)], [(2, 3), (3, 3), (3, 2)]]
 # print(v == find_length_n_path(3, board, ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']))
+#['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']

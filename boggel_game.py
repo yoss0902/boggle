@@ -1,11 +1,11 @@
 from boggle_board_randomizer import *
-from time import time
+from time import *
 
 
 class BoggleGame:
 
-    def __init__(self, words):
-        self.board = randomize_board(LETTERS)
+    def __init__(self, words, board):
+        self.board = board
         self.time = 3
         self.words = words
         self.score = 0
@@ -40,8 +40,13 @@ class BoggleGame:
             self.word = ""
             self.path = []
 
-    def time(self):
+
+
+
+
 
 
 g = BoggleGame(['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC'])
+start = time()
 print(g.available_cell_to_choose(0, 0))
+end = time()
