@@ -42,7 +42,7 @@ INITIAL_BOARD = [['*','*','*','*'],
 RULES = " * Words must be at least three letters in length." "\n" " * Each letter must be a horizontal, vertical, or diagonal neighbor of the one before it." "\n"" * No individual letter cube may be used more than once in a word ""\n"
 
 
-BOGGLE_PHOTO = "boggle_image.jpg"
+BOGGLE_PHOTO = "boggle_image.png"
 
 
 
