@@ -3,9 +3,11 @@ from copy import deepcopy
 import tkinter as tk
 from tkinter import messagebox
 from boggle_logic import *
+
 BUTTON_HOVER_COLOR = "gray"
 REGULAR_COLOR = "lightgray"
 BUTTON_ACTIVE_COLLOR = "slateblue"
+
 CUBES_BUTTON_STYLE = {"font": ("Courier", 30),
                       "borderwidth": 2,
                       "background": "gray35",
@@ -42,9 +44,13 @@ board = [['N', 'I', 'D', 'I'],
          ['Q', 'S', 'E', 'Z'],
          ['U', 'QU', 'C', 'T']]
 
+words = ['ESQU', 'ZTC', 'ITS', 'NID', "NOT"]
+
+
 class BoggleGui:
     def __init__(self):
-        self.words = [word.strip() for word in open(WORD_DICT, 'r') ]
+        self.words = words
+        # self.words = [word.strip() for word in open(WORD_DICT, 'r') ]
         self.initial_board = INITIAL_BOARD
         # self.board = randomize_board(LETTERS)
         self.board = board
@@ -66,27 +72,14 @@ class BoggleGui:
         # time
         self.time_flag = False
         self.second_count = 20
-        # self.minute_str = tk.StringVar()
-        # self.second_str = tk.StringVar()
-        # self.minute_str.set("03")
-        # self.second_str.set("00")
         self.time_label = tk.Label(self.outer_frame,  text= "time: 00:00 ", **WIDGET_STYLE)
         self.time_label.grid(row=0, column=0, rowspan=1, columnspan=1)
 
         # score
-        # self.score = 0
-        # self.score_to_user = tk.StringVar()
-        # self.score_to_user.set(self.score)
-
-        self.score_label = tk.Label(self.outer_frame, text="score: ", font=("david", 25),
-                                    bg=REGULAR_COLOR, width=19, height=2, relief="raised")
+        self.score_label = tk.Label(self.outer_frame, text="score: ", **WIDGET_STYLE)
         self.score_label.grid(row=1, column=0, rowspan=1, columnspan=1)
 
         #current_guess
-        # self.word_to_user = tk.StringVar(self.outer_frame)
-        # self.word = ""
-        # self.word_to_user.set(self.word)
-        # self.word_path = []
         self.current_guess_label = tk.Label(self.outer_frame, font=("david", 25), text="word: ", bg=REGULAR_COLOR,
                                              relief="raised",height=2, width=50)
         self.current_guess_label.grid(row=0, column=1, rowspan=1, columnspan=1)
@@ -94,16 +87,9 @@ class BoggleGui:
 
 
         #word_list
-        self.word_lst_label = tk.Label(self.outer_frame, font=("david", 25), text= "found words",
-                                   bg=REGULAR_COLOR,
-                                   relief="raised", width=19,height=2)
+        self.word_lst_label = tk.Label(self.outer_frame, text= "found words",**WIDGET_STYLE)
         self.word_lst_label.grid(row=2, column=0, rowspan=1, columnspan=1)
-        # self.word_lst = []
-        # self.word_list_to_user = tk.StringVar()
-        # self.word_list_to_user.set(self.word_lst)
-        # self.word_lst_to_print = tk.StringVar(self.word_list)
         self.found_words = tk.Text(self.outer_frame, font=("Ariel", 20),height=13, width=20, relief="ridge",bg = "lightgray", fg="black",state="disabled")
-
         self.found_words.grid(row=3, column=0, rowspan=2, columnspan=1)
 
 
@@ -115,9 +101,6 @@ class BoggleGui:
         #rules label
         self.rules_button = tk.Button(self.outer_frame, text="Boggle game rules",**WIDGET_STYLE, command = self.rules)
         self.rules_button.grid(row=2, column=2, rowspan=1, columnspan=1)
-        # self.instruction_txt = tk.Text(self.outer_frame, font=("Ariel", 20),height=13, width=20, relief="ridge", fg="black")
-        # # self.instruction_txt.insert(tk.END, INSTRUCTION)
-        # self.instruction_txt.config(state="disabled")
 
 
         # check word button
@@ -156,6 +139,8 @@ class BoggleGui:
         if self.time_flag:
             def letter_press():
                 self.boggle_logic.updating_variables(row, col, self.time_flag)
+                print(self.boggle_logic.word_path)
+                print(self.boggle_logic.word)
                 available_cells = self.boggle_logic.available_cell_to_choose(row, col)
                 current_word = self.boggle_logic.word
                 word_path = self.boggle_logic.word_path
@@ -165,7 +150,6 @@ class BoggleGui:
             return letter_press
 
     def lock_and_unlock_buttons(self, available_cells, word_path):
-        # available_cells = self.available_cell_to_choose(row, col)
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE):
                 self.buttons[i][j]["state"] = "disabled"
@@ -177,24 +161,26 @@ class BoggleGui:
 
     def check_complete_word(self):
         if self.time_flag and len(self.boggle_logic.word)>=3:
-            self.boggle_logic.check_complete_word(self.time_flag)
             if self.boggle_logic.word in self.words and self.boggle_logic.word not in self.boggle_logic.word_lst :
+                self.boggle_logic.word_lst.append(self.boggle_logic.word)
+                self.boggle_logic.score += len(self.boggle_logic.word_path) ** 2
                 self.found_words.config(state = "normal")
                 self.found_words.insert(tk.END, f"{self.boggle_logic.word_lst[-1]},")
                 self.found_words.config(state="disabled")
                 self.current_guess_label.config(text="correct!")
                 self.score_label.config(text=f" score: {self.boggle_logic.score}")
+                self.boggle_logic.check_complete_word(self.time_flag)
                 self.lock_and_unlock_buttons(self.boggle_logic.all_cells() ,self.boggle_logic.word_path)
             else:
+                self.boggle_logic.check_complete_word(self.time_flag)
                 self.current_guess_label.config(text="wrong!")
                 self.lock_and_unlock_buttons(self.boggle_logic.all_cells(),self.boggle_logic.word_path)
+
 
     def run_timer(self):
         if self.time_flag:
             if self.second_count > -1:
                 mins, secs = divmod(self.second_count, 60)
-                # self.minute_str.set(mins)
-                # self.second_str.set(secs)
                 self.time_label.config(text=f"time: {mins}:{secs}")
                 if self.second_count == 0:
                     self.time_flag = False
@@ -218,7 +204,6 @@ class BoggleGui:
         self.board = board
         self.boggle_logic.set_board(self.board)
         self.second_count = 180
-
         self.create_button_in_middle_frame(self.board)
         self.found_words.config(state="normal")
         self.found_words.delete("1.0", tk.END)
@@ -232,5 +217,4 @@ class BoggleGui:
         self.root.destroy()
 
 g = BoggleGui()
-# print(g.available_cell_to_choose(3, 3))
 g.run()

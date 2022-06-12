@@ -41,14 +41,9 @@ class BoggleLogic:
 
     def check_complete_word(self, time_flag):
         if time_flag:
-            if self.word in self.words and self.word not in self.word_lst:
-                self.word_lst.append(self.word)
-                self.score += len(self.word_path) ** 2
-                self.word = ""
-                self.word_path = []
-            else:
-                self.word = ""
-                self.word_path = []
+            self.word = ""
+            self.word_path = []
+
 
     def all_cells(self):
         every_cell = []
