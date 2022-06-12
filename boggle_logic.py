@@ -1,8 +1,6 @@
 from boggle_board_randomizer import *
 
 
-
-
 class BoggleLogic:
     def __init__(self, board, words):
         self.word = ""
@@ -11,7 +9,6 @@ class BoggleLogic:
         self.words = words
         self.word_lst = []
         self.score = 0
-
 
     def available_cell_to_choose(self, row, col):
         sorraunding_coordinates = [(row + 1, col), (row - 1, col), (row - 1, col - 1), (row, col - 1),
@@ -33,23 +30,19 @@ class BoggleLogic:
 
     def updating_variables(self, row, col, time_flag):
         if time_flag:
-            print(row, col)
-
             self.word += self.board[row][col]
             self.word_path.append((row, col))
-
 
     def check_complete_word(self, time_flag):
         if time_flag:
             self.word = ""
             self.word_path = []
 
-
     def all_cells(self):
         every_cell = []
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE):
-                every_cell.append((i,j))
+                every_cell.append((i, j))
         return every_cell
 
     def restart_game(self):
