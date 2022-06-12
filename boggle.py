@@ -3,6 +3,7 @@ from boggle_board_randomizer import *
 import time
 from tkinter import messagebox
 from copy import deepcopy
+from PIL import Image
 
 BUTTON_HOVER_COLOR = "gray"
 REGULAR_COLOR = "lightgray"
@@ -41,7 +42,7 @@ INITIAL_BOARD = [['*','*','*','*'],
 RULES = " * Words must be at least three letters in length." "\n" " * Each letter must be a horizontal, vertical, or diagonal neighbor of the one before it." "\n"" * No individual letter cube may be used more than once in a word ""\n"
 
 
-BOGGLE_PHOTO = "/cs/usr/yossida/PycharmProjects/boggle/boggle image.jpg"
+BOGGLE_PHOTO = "boggle_image.jpg"
 
 
 
@@ -135,8 +136,10 @@ class Boggle:
         self.time_label.after(1000, self.run_timer)
 
         #photo
-        self.photo = tk.PhotoImage(file= BOGGLE_PHOTO)
-        self.photo.grid(row = 2, column = 2, rowspan=2, columnspan=1)
+
+        self.image = tk.PhotoImage(Image.open(BOGGLE_PHOTO))
+        self.photo_label = tk.Button(self.outer_frame, image = self.image)
+        self.photo_label.grid(row = 2, column = 2, rowspan=2, columnspan=1)
 
     def rules(self):
         messagebox.showinfo("boggle game rules", RULES)
