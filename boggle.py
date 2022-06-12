@@ -109,7 +109,7 @@ class Boggle:
         self.word_list_to_user = tk.StringVar()
         self.word_list_to_user.set(self.word_lst)
         # self.word_lst_to_print = tk.StringVar(self.word_list)
-        self.found_words = tk.Text(self.outer_frame, font=("Ariel", 20),height=13, width=20, relief="ridge", fg="black",state="disabled")
+        self.found_words = tk.Text(self.outer_frame, font=("Ariel", 20),height=13, width=20, relief="ridge",bg = "lightgray", fg="black",state="disabled")
 
         self.found_words.grid(row=3, column=0, rowspan=2, columnspan=1)
 
@@ -137,9 +137,14 @@ class Boggle:
 
         #photo
 
+
+        # self.image1 = Image.open(BOGGLE_PHOTO)
+        # self.resizes = self.image1.resize((400, 300))
         self.image = tk.PhotoImage(file = BOGGLE_PHOTO)
-        self.photo_label = tk.Button(self.outer_frame, image = self.image)
-        self.photo_label.grid(row = 2, column = 2, rowspan=2, columnspan=1)
+
+        # self.image.resize((400, 300))
+        self.photo_label = tk.Label(self.outer_frame, image = self.image )
+        self.photo_label.grid(row = 3, column = 2, rowspan=1, columnspan=1)
 
     def rules(self):
         messagebox.showinfo("boggle game rules", RULES)
