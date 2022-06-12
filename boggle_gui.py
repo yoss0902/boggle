@@ -47,29 +47,29 @@ class Timer:
             second_count -= 1
 
 
-class Score:
-    def __init__(self, frame):
-        self.outer_frame = frame
+# class Score:
+#     def __init__(self, frame):
+#         self.outer_frame = frame
+#
+#         self.score_label = tk.Label(self.outer_frame, text=f"score: ", font=("david", 30),
+#                                     bg=REGULAR_COLOR, width=15, relief="ridge")
+#         self.score_label.grid(row=1, column=0, rowspan=1, columnspan=1)
 
-        self.score_label = tk.Label(self.outer_frame, text=f"score: ", font=("david", 30),
-                                    bg=REGULAR_COLOR, width=15, relief="ridge")
-        self.score_label.grid(row=1, column=0, rowspan=1, columnspan=1)
 
-
-class CubesBoard:
-
-    def __init__(self, frame, board):
-        self.outer_frame = frame
-        self.__board = board
-        self.buttons = {}
-        self.__middle_frame = tk.Frame(self.outer_frame)
-        self.__middle_frame.grid(row=1, column=1, rowspan=2, columnspan=1)
-
-    def get_middle_frame(self):
-        return self.__middle_frame
-
-    def get_board(self):
-        return self.__board
+# class CubesBoard:
+#
+#     def __init__(self, frame, board):
+#         self.outer_frame = frame
+#         self.__board = board
+#         self.buttons = {}
+#         self.__middle_frame = tk.Frame(self.outer_frame)
+#         self.__middle_frame.grid(row=1, column=1, rowspan=2, columnspan=1)
+#
+#     def get_middle_frame(self):
+#         return self.__middle_frame
+#
+#     def get_board(self):
+#         return self.__board
 
     # def set_board(self):
     #     self.board = randomize_board(LETTERS)
@@ -89,37 +89,37 @@ class CubesBoard:
         self.buttons[button_char] = button
 
 
-class CurrentGuess:
-    def __init__(self, frame):
-        self.outer_frame = frame
-        self.current_guess_label = tk.Label(self.outer_frame, font=("david", 30), text="word var", bg=REGULAR_COLOR,
-                                            width=15, relief="ridge")
-        self.current_guess_label.grid(row=0, column=1, rowspan=1, columnspan=1)
-
-
-class GuessedWords:
-    def __init__(self, frame):
-        self.outer_frame = frame
-        self.word_list = []
-        self.word_lst_to_print = tk.StringVar(self.word_list)
-        self.found_words = tk.Label(self.outer_frame, text="word_lst", font=("Ariel", 20), width=10, relief="ridge")
-        self.found_words.grid(row=2, column=0, rowspan=1, columnspan=1)
-
-    def update_word_lst(self):
+# class CurrentGuess:
+#     def __init__(self, frame):
+#         self.outer_frame = frame
+#         self.current_guess_label = tk.Label(self.outer_frame, font=("david", 30), text="word var", bg=REGULAR_COLOR,
+#                                             width=15, relief="ridge")
+#         self.current_guess_label.grid(row=0, column=1, rowspan=1, columnspan=1)
+#
+#
+# class GuessedWords:
+#     def __init__(self, frame):
+#         self.outer_frame = frame
+#         self.word_list = []
+#         self.word_lst_to_print = tk.StringVar(self.word_list)
+#         self.found_words = tk.Label(self.outer_frame, text="word_lst", font=("Ariel", 20), width=10, relief="ridge")
+#         self.found_words.grid(row=2, column=0, rowspan=1, columnspan=1)
+#
+#     def update_word_lst(self):
         ...
 
 
-class StartButton:
-
-    def __init__(self, frame, timer):
-        self.outer_frame = frame
-        self.start = self.start()
-        self.start_button = tk.Button(self.outer_frame, text="start", bg="blue", font=("david", 20), width=10,
-                                      relief="ridge", command = timer.run_timer)
-        self.start_button.grid(row=0, column=2, rowspan=1, columnspan=1)
-
-    def start(self):
-        """ initialize a game and change button text and color"""
+# class StartButton:
+#
+#     def __init__(self, frame, timer):
+#         self.outer_frame = frame
+#         self.start = self.start()
+#         self.start_button = tk.Button(self.outer_frame, text="start", bg="blue", font=("david", 20), width=10,
+#                                       relief="ridge", command = timer.run_timer)
+#         self.start_button.grid(row=0, column=2, rowspan=1, columnspan=1)
+#
+#     def start(self):
+#         """ initialize a game and change button text and color"""
         ...
 
 
@@ -129,21 +129,21 @@ class BoggleGui:
         self.root = tk.Tk()
 
         self.root.title("Boggle Game")
-        self.__outer_frame = tk.Frame(self.root, width=400, height=400, bg=REGULAR_COLOR,
+        self.outer_frame = tk.Frame(self.root, width=400, height=400, bg=REGULAR_COLOR,
                                       highlightbackground=REGULAR_COLOR,
                                       highlightthickness=5)
-        self.__outer_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        self.__cubes_board = CubesBoard(self.get_outer_frame(), randomize_board(LETTERS))
-        self.__timer = Timer(self.get_outer_frame(), self.root)
-        self.__score = Score(self.get_outer_frame())
-        self.__guessed_word = GuessedWords(self.get_outer_frame())
-        self.__current_word = CurrentGuess(self.get_outer_frame())
-        self.start = StartButton(self.get_outer_frame(), self.get_timer())
+        self.outer_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        # self.__cubes_board = CubesBoard(self.get_outer_frame(), randomize_board(LETTERS))
+        # self.__timer = Timer(self.get_outer_frame(), self.root)
+        # self.__score = Score(self.get_outer_frame())
+        # self.__guessed_word = GuessedWords(self.get_outer_frame())
+        # self.__current_word = CurrentGuess(self.get_outer_frame())
+        # self.start = StartButton(self.get_outer_frame(), self.get_timer())
 
-        self.__instruction_lable = tk.Label(self.get_outer_frame(), text="game instruction", font=("Ariel", 15),
+        self.instruction_lable = tk.Label(self.get_outer_frame(), text="game instruction", font=("Ariel", 15),
                                             bg="yellow", relief="ridge")
-        self.__instruction_lable.grid(row=1, column=2, rowspan=2, columnspan=1)
-        self.__cubes_board.create_button_in_middle_frame()
+        self.instruction_lable.grid(row=1, column=2, rowspan=2, columnspan=1)
+        # self.__cubes_board.create_button_in_middle_frame()
 
     # def get_root(self):
     #     return self.__root
