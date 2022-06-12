@@ -29,7 +29,10 @@ board = [['N', 'I', 'D', 'I'],
          ['U', 'QU', 'C', 'T']]
 
 
-
+board1 = [['*','*','*','*'],
+         ['O', 'T', 'TC', 'G'],
+         ['Q', 'S', 'E', 'Z'],
+         ['U', 'QU', 'C', 'T']]
 
 
 
@@ -47,7 +50,7 @@ class Boggle:
 
         # time
         self.time_flag = False
-        self.second_count = 5
+        self.second_count = 20
         self.minute_str = tk.StringVar()
         self.second_str = tk.StringVar()
         self.minute_str.set("03")
@@ -58,7 +61,8 @@ class Boggle:
 
 
         # board
-        self.board = [["*"]*BOARD_SIZE]*BOARD_SIZE
+        # self.board = [["*"]*BOARD_SIZE]*BOARD_SIZE
+        self.board = board1
         self.buttons = deepcopy(self.board)
         # self.buttons = {}
         self.middle_frame = tk.Frame(self.outer_frame)
@@ -108,7 +112,7 @@ class Boggle:
         self.instruction_lable = tk.Label(self.outer_frame, text="game instruction",**WIDGET_STYLE)
         self.instruction_lable.grid(row=2, column=2, rowspan=1, columnspan=1)
         self.instruction_txt = tk.Text(self.outer_frame, font=("Ariel", 20),height=15, width=20, relief="ridge", fg="black")
-        self.instruction_txt.insert(tk.END, INSTRUCTION)
+        # self.instruction_txt.insert(tk.END, INSTRUCTION)
         self.instruction_txt.config(state="disabled")
 
 
@@ -153,6 +157,7 @@ class Boggle:
     def updating_variables(self, row, col):
         if self.time_flag:
             def letter_press():
+                print("PAPAYA")
                 self.lock_and_unlock_buttons(row, col)
                 self.word += self.board[row][col]
                 self.word_to_user.set(f" word: {self.word}")
@@ -208,6 +213,13 @@ class Boggle:
         self.time_flag = True
         self.board = board
         self.create_button_in_middle_frame()
+        # for i in range(BOARD_SIZE):
+        #     for j in range(BOARD_SIZE):
+        #         self.buttons[i][j].configure(text  =self.board[i][j])
+        #
+        #         # self.buttons[i][j]["text"] = f'{}'
+        #         self.buttons[i][j].configure(state="normal")
+
 
 
     def restart_game(self):
@@ -237,15 +249,18 @@ class Boggle:
 
     def lock_and_unlock_buttons(self, row, col):
         available_cells = self.available_cell_to_choose(row, col)
-        # print(available_cells)
+
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE):
                 # print(type(self.buttons[i][j]))
-                self.buttons[i][j].configure(state="disabled")
-        # for k in available_cells:
-        #     row, col = k
-        #     self.buttons[row][col].configure(state="active")
-        #
+                # self.buttons[i][j].configure(state="disabled")
+                self.buttons[i][j]["state"] = "disabled"
+                print(i, j)
+        for k in available_cells:
+            row, col = k
+            self.buttons[row][col].configure(state="normal")
+
+
 
 
 words = ['ESQU', 'ZTC', 'ITS', 'NID', "NOT"]
