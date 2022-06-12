@@ -16,7 +16,7 @@ CUBES_BUTTON_STYLE = {"font": ("Courier", 30),
                       "fg": "black",
                       "activebackground": "snow",
 "highlightbackground":"black",
-                      "height":3, "width":8}
+                      "height":1, "width":4}
 
 WIDGET_STYLE = {"font": ("david", 25),
                       "relief": tk.RAISED,
@@ -82,8 +82,8 @@ class Boggle:
 
         # score
         self.score = 0
-        self.score_to_user = tk.StringVar()
-        self.score_to_user.set(self.score)
+        # self.score_to_user = tk.StringVar()
+        # self.score_to_user.set(self.score)
 
         self.score_label = tk.Label(self.outer_frame, text="score: ", font=("david", 25),
                                     bg=REGULAR_COLOR, width=19, height=2, relief="raised")
@@ -137,9 +137,9 @@ class Boggle:
 
         #photo
 
-        self.image = tk.PhotoImage(file = BOGGLE_PHOTO)
-        self.photo_label = tk.Button(self.outer_frame, image = self.image)
-        self.photo_label.grid(row = 2, column = 2, rowspan=2, columnspan=1)
+        # self.image = tk.PhotoImage(file = BOGGLE_PHOTO)
+        # self.photo_label = tk.Button(self.outer_frame, image = self.image)
+        # self.photo_label.grid(row = 2, column = 2, rowspan=2, columnspan=1)
 
     def rules(self):
         messagebox.showinfo("boggle game rules", RULES)
@@ -196,7 +196,7 @@ class Boggle:
                 self.word_to_user.set("correct!")
                 self.current_guess_label.config(text=self.word_to_user.get())
                 self.score += len(self.word_path) ** 2
-                self.score_to_user.set(self.score)
+                # self.score_to_user.set(self.score)
                 self.score_label.config(text=f" score: {self.score}")
                 self.word = ""
                 self.word_path = []
@@ -245,7 +245,7 @@ class Boggle:
         self.lock_and_unlock_buttons(self.all_cells())
         self.word_path = []
         self.score = 0
-        self.score_to_user.set(self.score)
+        # self.score_to_user.set(self.score)
         self.score_label.config(text=f" score: {self.score}")
         self.word = ""
         self.word_to_user.set(self.word)
