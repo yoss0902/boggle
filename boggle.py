@@ -7,18 +7,22 @@ from copy import deepcopy
 BUTTON_HOVER_COLOR = "gray"
 REGULAR_COLOR = "lightgray"
 BUTTON_ACTIVE_COLLOR = "slateblue"
-CUBES_BUTTON_STYLE = {"font": ("Courier", 23),
+CUBES_BUTTON_STYLE = {"font": ("Courier", 30),
                       "borderwidth": 2,
+                      "background": "gray35",
                       "relief": tk.RAISED,
-                      "bg": "azure4",
-                      "fg": "dodgerBlue4",
+                      "bg": "IndianRed3",
+                      "fg": "black",
                       "activebackground": "snow",
-                      "height":4, "width":10}
+"highlightbackground":"black",
+                      "height":3, "width":8}
 
 WIDGET_STYLE = {"font": ("david", 25),
                       "relief": tk.RAISED,
-                      "bg": "azure4",
-                       "fg": "dodgerBlue4",
+                      "bg": "lightgray",
+                       "fg": "black",
+"highlightbackground":"black",
+                
                       "activebackground": "light sky blue",
                       "height":2, "width":19}
 
@@ -29,10 +33,17 @@ board = [['N', 'I', 'D', 'I'],
          ['U', 'QU', 'C', 'T']]
 
 
-board1 = [['*','*','*','*'],
-         ['O', 'T', 'TC', 'G'],
-         ['Q', 'S', 'E', 'Z'],
-         ['U', 'QU', 'C', 'T']]
+INITIAL_BOARD = [['*','*','*','*'],
+                 ['*','*','*','*'],
+                 ['*','*','*','*'],
+                 ['*','*','*','*']]
+
+RULES = " * Words must be at least three letters in length." "\n" " * Each letter must be a horizontal, vertical, or diagonal neighbor of the one before it." "\n"" * No individual letter cube may be used more than once in a word ""\n"
+
+
+BOGGLE_PHOTO = "/cs/usr/yossida/PycharmProjects/boggle/boggle image.jpg"
+
+
 
 
 
@@ -41,9 +52,8 @@ class Boggle:
     def __init__(self, words):
         self.root = tk.Tk()
         self.root.title("Boggle Game")
-        self.outer_frame = tk.Frame(self.root, width=400, height=400, bg="dodgerBlue2",
-                                    highlightbackground=REGULAR_COLOR, highlightthickness=1
-                                   )
+        self.outer_frame = tk.Frame(self.root, width=400, height=400, bg="gray35",
+                                    highlightbackground=REGULAR_COLOR, highlightthickness=1)
         self.outer_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         self.words = words
 
@@ -62,11 +72,12 @@ class Boggle:
 
         # board
         # self.board = [["*"]*BOARD_SIZE]*BOARD_SIZE
-        self.board = board1
+        self.board = INITIAL_BOARD
         self.buttons = deepcopy(self.board)
         # self.buttons = {}
-        self.middle_frame = tk.Frame(self.outer_frame)
+        self.middle_frame = tk.Frame(self.outer_frame, bg="gray35")
         self.middle_frame.grid(row=1, column=1, rowspan=3, columnspan=1)
+
 
         # score
         self.score = 0
@@ -97,7 +108,7 @@ class Boggle:
         self.word_list_to_user = tk.StringVar()
         self.word_list_to_user.set(self.word_lst)
         # self.word_lst_to_print = tk.StringVar(self.word_list)
-        self.found_words = tk.Text(self.outer_frame, font=("Ariel", 20),height=15, width=20, relief="ridge", fg="black",state="disabled")
+        self.found_words = tk.Text(self.outer_frame, font=("Ariel", 20),height=13, width=20, relief="ridge", fg="black",state="disabled")
 
         self.found_words.grid(row=3, column=0, rowspan=2, columnspan=1)
 
@@ -108,12 +119,12 @@ class Boggle:
         self.start_button.grid(row=0, column=2, rowspan=1, columnspan=1)
 
 
-        #instruction label
-        self.instruction_lable = tk.Label(self.outer_frame, text="game instruction",**WIDGET_STYLE)
-        self.instruction_lable.grid(row=2, column=2, rowspan=1, columnspan=1)
-        self.instruction_txt = tk.Text(self.outer_frame, font=("Ariel", 20),height=15, width=20, relief="ridge", fg="black")
-        # self.instruction_txt.insert(tk.END, INSTRUCTION)
-        self.instruction_txt.config(state="disabled")
+        #rules label
+        self.rules_button = tk.Button(self.outer_frame, text="Boggle game rules",**WIDGET_STYLE, command = self.rules)
+        self.rules_button.grid(row=2, column=2, rowspan=1, columnspan=1)
+        # self.instruction_txt = tk.Text(self.outer_frame, font=("Ariel", 20),height=13, width=20, relief="ridge", fg="black")
+        # # self.instruction_txt.insert(tk.END, INSTRUCTION)
+        # self.instruction_txt.config(state="disabled")
 
 
         # check word button
@@ -122,6 +133,13 @@ class Boggle:
 
         self.create_button_in_middle_frame()
         self.time_label.after(1000, self.run_timer)
+
+        #photo
+        self.photo = tk.PhotoImage(file= BOGGLE_PHOTO)
+        self.photo.grid(row = 2, column = 2, rowspan=2, columnspan=1)
+
+    def rules(self):
+        messagebox.showinfo("boggle game rules", RULES)
 
     def run(self):
         self.root.mainloop()
@@ -139,13 +157,13 @@ class Boggle:
         sorraunding_coordinates = [(row + 1, col), (row - 1, col), (row - 1, col - 1), (row, col - 1),
                                    (row + 1, col - 1), (row - 1, col + 1), (row, col + 1), (row + 1, col + 1)]
         coordinates_to_delete = []
-        if row + 1 > len(self.board):
+        if row + 1 >= len(self.board):
             coordinates_to_delete.extend([(row + 1, col), (row + 1, col - 1), (row + 1, col + 1)])
         if row - 1 < 0:
             coordinates_to_delete.extend([(row - 1, col), (row - 1, col - 1), (row - 1, col + 1)])
         if col - 1 < 0:
             coordinates_to_delete.extend([(row - 1, col - 1), (row, col - 1), (row + 1, col - 1)])
-        if col + 1 > len(self.board[0]):
+        if col + 1 >= len(self.board[0]):
             coordinates_to_delete.extend([(row - 1, col + 1), (row, col + 1), (row + 1, col + 1)])
         deleting_coordinates = list(set(coordinates_to_delete))
         for i in deleting_coordinates:
@@ -157,8 +175,7 @@ class Boggle:
     def updating_variables(self, row, col):
         if self.time_flag:
             def letter_press():
-                print("PAPAYA")
-                self.lock_and_unlock_buttons(row, col)
+                self.lock_and_unlock_buttons(self.available_cell_to_choose(row, col))
                 self.word += self.board[row][col]
                 self.word_to_user.set(f" word: {self.word}")
                 self.current_guess_label.config(text=self.word_to_user.get())
@@ -170,13 +187,9 @@ class Boggle:
             if self.word in self.words and self.word not in self.word_lst:
                 self.word_lst.append(self.word)
                 self.word_list_to_user.set(f'{self.word_lst[-1]}')
-
                 self.found_words.config(state = "normal")
                 self.found_words.insert(tk.END, f"{self.word_list_to_user.get()}, ")
                 self.found_words.config(state="disabled")
-
-
-
                 self.word_to_user.set("correct!")
                 self.current_guess_label.config(text=self.word_to_user.get())
                 self.score += len(self.word_path) ** 2
@@ -184,11 +197,14 @@ class Boggle:
                 self.score_label.config(text=f" score: {self.score}")
                 self.word = ""
                 self.word_path = []
+                self.lock_and_unlock_buttons(self.all_cells())
             else:
                 self.word = ""
                 self.word_to_user.set("wrong!")
                 self.current_guess_label.config(text=self.word_to_user.get())
                 self.word_path = []
+                self.lock_and_unlock_buttons(self.all_cells())
+
 
     def run_timer(self):
         if self.time_flag:
@@ -200,7 +216,6 @@ class Boggle:
                 if self.second_count == 0:
                     self.time_flag = False
                     game_flag = messagebox.askretrycancel("popup", "game is over!")
-                    # print(game_flag)
                     if game_flag:
                         self.restart_game()
                     else:
@@ -213,14 +228,6 @@ class Boggle:
         self.time_flag = True
         self.board = board
         self.create_button_in_middle_frame()
-        # for i in range(BOARD_SIZE):
-        #     for j in range(BOARD_SIZE):
-        #         self.buttons[i][j].configure(text  =self.board[i][j])
-        #
-        #         # self.buttons[i][j]["text"] = f'{}'
-        #         self.buttons[i][j].configure(state="normal")
-
-
 
     def restart_game(self):
         self.time_flag = True
@@ -232,7 +239,7 @@ class Boggle:
         self.found_words.config(state="normal")
         self.found_words.delete("1.0", tk.END)
         self.found_words.config(state="disabled")
-
+        self.lock_and_unlock_buttons(self.all_cells())
         self.word_path = []
         self.score = 0
         self.score_to_user.set(self.score)
@@ -247,24 +254,29 @@ class Boggle:
     def exit(self):
         self.root.destroy()
 
-    def lock_and_unlock_buttons(self, row, col):
-        available_cells = self.available_cell_to_choose(row, col)
+    def lock_and_unlock_buttons(self, available_cells):
+        # available_cells = self.available_cell_to_choose(row, col)
 
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE):
-                # print(type(self.buttons[i][j]))
-                # self.buttons[i][j].configure(state="disabled")
                 self.buttons[i][j]["state"] = "disabled"
-                print(i, j)
         for k in available_cells:
             row, col = k
-            self.buttons[row][col].configure(state="normal")
+            if (row, col) not in self.word_path:
+                print(row, col)
+                self.buttons[row][col].configure(state="normal")
 
-
+    def all_cells(self):
+        every_cell = []
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
+                every_cell.append((i,j))
+        return every_cell
 
 
 words = ['ESQU', 'ZTC', 'ITS', 'NID', "NOT"]
 # def load_words_dict(filename):
 #     return [word.strip() for word in open(filename, 'r') if len(word.strip()) == 3]
 g = Boggle(words)
+# print(g.available_cell_to_choose(3, 3))
 g.run()
