@@ -137,7 +137,7 @@ class Boggle:
 
         #photo
 
-        self.image = tk.PhotoImage(Image.open(BOGGLE_PHOTO))
+        self.image = tk.PhotoImage(file = BOGGLE_PHOTO)
         self.photo_label = tk.Button(self.outer_frame, image = self.image)
         self.photo_label.grid(row = 2, column = 2, rowspan=2, columnspan=1)
 
