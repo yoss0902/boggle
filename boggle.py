@@ -16,7 +16,7 @@ CUBES_BUTTON_STYLE = {"font": ("Courier", 30),
                       "fg": "black",
                       "activebackground": "snow",
 "highlightbackground":"black",
-                      "height":1, "width":4}
+                      "height":3, "width":8}
 
 WIDGET_STYLE = {"font": ("david", 25),
                       "relief": tk.RAISED,
@@ -109,7 +109,7 @@ class Boggle:
         self.word_list_to_user = tk.StringVar()
         self.word_list_to_user.set(self.word_lst)
         # self.word_lst_to_print = tk.StringVar(self.word_list)
-        self.found_words = tk.Text(self.outer_frame, font=("Ariel", 20),height=13, width=20, relief="ridge", fg="black",state="disabled")
+        self.found_words = tk.Text(self.outer_frame, font=("Ariel", 20),height=13, width=20, relief="ridge",bg = "lightgray", fg="black",state="disabled")
 
         self.found_words.grid(row=3, column=0, rowspan=2, columnspan=1)
 
