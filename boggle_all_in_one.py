@@ -16,7 +16,7 @@ CUBES_BUTTON_STYLE = {"font": ("Courier", 30),
                       "fg": "black",
                       "activebackground": "snow",
 "highlightbackground":"black",
-                      "height":3, "width":8}
+                      "height":3, "width":7}
 
 WIDGET_STYLE = {"font": ("david", 25),
                       "relief": tk.RAISED,
@@ -95,7 +95,7 @@ class Boggle:
         self.word_to_user.set(self.word)
         self.word_path = []
         self.current_guess_label = tk.Label(self.outer_frame, font=("david", 25), text="word: ", bg=REGULAR_COLOR,
-                                             relief="raised",height=2, width=50)
+                                             relief="raised",height=2, width=30)
         self.current_guess_label.grid(row=0, column=1, rowspan=1, columnspan=1)
 
 
