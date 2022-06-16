@@ -45,11 +45,13 @@ class BoggleLogic:
                 every_cell.append((i, j))
         return every_cell
 
-    def restart_game(self):
+    def restart_game(self, board):
         self.word_lst = []
         self.word_path = []
         self.score = 0
         self.word = ""
+        self.board = board
 
     def set_board(self, board):
         self.board = board
+

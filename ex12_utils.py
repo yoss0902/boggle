@@ -1,11 +1,22 @@
 from copy import deepcopy
 from time import *
 
+def is_valid_path_helper(path, board):
+    for i in path:
+        row, col = i
+        if not  (0<= row < len(board)) or not (0 <= col< len(board[0])):
+            return False
+    return True
 
 def is_valid_path(board, path, words):
     """ a function that checks if the path given
     matching a word in the words list and that the
      path is valid"""
+
+    if not is_valid_path_helper(path, board):
+        return
+    if not path:
+        return
     flag, word = _legal_move(path, board)
     if not flag:
         return
