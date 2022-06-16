@@ -1,19 +1,22 @@
 from copy import deepcopy
-from time import *
 
-def is_valid_path_helper(path, board):
+
+def _is_valid_path_helper(path, board):
+    """a function that checks if the given path
+    list members are in the board"""
     for i in path:
         row, col = i
-        if not  (0<= row < len(board)) or not (0 <= col< len(board[0])):
+        if not (0 <= row < len(board)) or not (0 <= col < len(board[0])):
             return False
     return True
+
 
 def is_valid_path(board, path, words):
     """ a function that checks if the path given
     matching a word in the words list and that the
      path is valid"""
 
-    if not is_valid_path_helper(path, board):
+    if not _is_valid_path_helper(path, board):
         return
     if not path:
         return
@@ -106,6 +109,8 @@ def find_length_n_words(n, board, words):
 
 
 def max_score_paths(board, words):
+    """a function that return the max score that can
+    be extract from a board for a given words list"""
     path_lst = []
     for word in words:
         flag = False
@@ -128,31 +133,3 @@ def max_score_paths(board, words):
             if flag:
                 break
     return path_lst
-
-
-
-
-
-# def load_words_dict(filename):
-#     return [word.strip() for word in open(filename, 'r') if len(word.strip()) == 3]
-start = time()
-board = [['N', 'I', 'D', 'I'],
-         ['O', 'T', 'TC', 'G'],
-         ['Q', 'S', 'E', 'Z'],
-         ['U', 'QU', 'C', 'T']]
-words = ['ESQU', 'ZTC', 'ITS']
-# print(max_score_paths(b, words))
-print(find_length_n_paths(3, board,words ))
-print(find_length_n_words(3, board, words))
-
-
-
-end = time()
-print(end-start)
-print(start)
-print(end)
-#'ITS', 'GZC', 'TSC',
-# print(max_score_paths(board, words))
-# v = [[(0, 1), (1, 1), (2, 1)], [(0, 1), (1, 2), (2, 1)], [(0, 3), (1, 2), (2, 1)], [(1, 1), (2, 1), (3, 2)], [(1, 2), (2, 1), (3, 2)], [(1, 3), (2, 3), (3, 2)], [(2, 2), (2, 1), (3, 1)], [(2, 3), (3, 3), (3, 2)]]
-# print(v == find_length_n_path(3, board, ['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']))
-#['ITS', 'GZC', 'TSC', 'ESQU', 'ZTC']
