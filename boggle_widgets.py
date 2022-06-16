@@ -325,7 +325,7 @@ class Score:
         self.outer_frame = frame
         self.score_label = tk.Label(self.outer_frame, text=INITIAL_SCORE_TXT + INITIAL_SCORE, **WIDGET_STYLE)
         self.score_label.grid(row=1, column=0, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
-
+    @update_score.setter
     def update_score(self, update):
         self.score_label.config(text=update)
 
