@@ -132,7 +132,7 @@ class Boggle:
 
     def exit(self):
         """exit the game if the user chose so"""
-        self.get_root().destroy()
+        self.root.destroy()
 
 
 if __name__ == '__main__':
