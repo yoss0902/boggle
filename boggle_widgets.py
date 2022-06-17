@@ -244,7 +244,7 @@ class Timer:
     def __init__(self, frame, restart_game, exit):
         """a constructor who's initialize and creates the vars for the class"""
         self.__time_flag = False
-        self.__second_count = 5
+        self.__second_count = 179
         self.__outer_frame = frame
         self.__time_label = tk.Label(self.frame, text=f'{TIME_TXT} {INITIAL_TIME}', **WIDGET_STYLE)
         self.time_label.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
@@ -513,7 +513,7 @@ class Image:
     def outer_frame(self):
         return self.__outer_frame
 
-    @property
+    @propertyF
     def image(self):
         return self.__image
 

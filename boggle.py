@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 from boggle_logic import *
 from boggle_widgets import *
-
+import sys
 
 class Boggle:
     """a class for the graphical user interface in addition to the main
