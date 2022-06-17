@@ -329,10 +329,10 @@ class Score:
     @property
     def outer_frame(self):
         return self.__outer_frame
+
     @property
     def score_label(self):
         return self.__score_label
-
 
     def update_score(self, update):
         self.score_label.config(text=update)
@@ -353,11 +353,8 @@ class CurrentGuess:
     def guess_label(self):
         return self.__current_guess_label
 
-
-
     def update_guess(self, update):
         self.guess_label.config(text=update)
-
 
 
 class WordLst:
@@ -379,7 +376,6 @@ class WordLst:
     @property
     def found_words(self):
         return self.__found_words
-
 
     def restart_world_lst(self):
         self.found_words.config(state=NORMAL_STATE)
@@ -417,7 +413,6 @@ class StartButton:
     def start_button(self):
         return self.__start_button
 
-
     def start(self):
         self.start_button.configure(text=DURING_GAME_START_TXT, state=DISABLED_STATE)
         self.time.time_flag = True
@@ -453,10 +448,9 @@ class Submit:
         self.__score = score
         self.__board = board
         self.__check_button = tk.Button(self.outer_frame, text=SUBMIT_TXT, **WIDGET_STYLE,
-                                      command=self.check_complete_word)
+                                        command=self.check_complete_word)
         self.check_button.configure(bg="RoyalBlue1")
         self.check_button.grid(row=1, column=2, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
-
 
     @property
     def word_lst(self):
