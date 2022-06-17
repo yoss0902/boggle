@@ -322,32 +322,64 @@ class Timer:
 
 class Score:
     def __init__(self, frame):
-        self.outer_frame = frame
-        self.score_label = tk.Label(self.outer_frame, text=INITIAL_SCORE_TXT + INITIAL_SCORE, **WIDGET_STYLE)
+        self.__outer_frame = frame
+        self.__score_label = tk.Label(self.outer_frame, text=INITIAL_SCORE_TXT + INITIAL_SCORE, **WIDGET_STYLE)
         self.score_label.grid(row=1, column=0, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
-    @update_score.setter
+
+    @property
+    def outer_frame(self):
+        return self.__outer_frame
+    @property
+    def score_label(self):
+        return self.__score_label
+
+
     def update_score(self, update):
         self.score_label.config(text=update)
 
 
 class CurrentGuess:
     def __init__(self, frame):
-        self.outer_frame = frame
-        self.current_guess_label = tk.Label(self.outer_frame, text=INITIAL_WORD_TXT, **WIDGET_STYLE)
-        self.current_guess_label.config(height=2, width=30)
-        self.current_guess_label.grid(row=0, column=1, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
+        self.__outer_frame = frame
+        self.__current_guess_label = tk.Label(self.outer_frame, text=INITIAL_WORD_TXT, **WIDGET_STYLE)
+        self.guess_label.config(height=2, width=30)
+        self.guess_label.grid(row=0, column=1, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
+
+    @property
+    def outer_frame(self):
+        return self.__outer_frame
+
+    @property
+    def guess_label(self):
+        return self.__current_guess_label
+
+
 
     def update_guess(self, update):
-        self.current_guess_label.config(text=update)
+        self.guess_label.config(text=update)
+
 
 
 class WordLst:
     def __init__(self, frame):
-        self.outer_frame = frame
-        self.word_lst_label = tk.Label(self.outer_frame, text=FOUND_WORD_TXT, **WIDGET_STYLE)
+        self.__outer_frame = frame
+        self.__word_lst_label = tk.Label(self.outer_frame, text=FOUND_WORD_TXT, **WIDGET_STYLE)
         self.word_lst_label.grid(row=2, column=0, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
-        self.found_words = tk.Text(self.outer_frame, **FOUND_WORD_STYLE)
+        self.__found_words = tk.Text(self.outer_frame, **FOUND_WORD_STYLE)
         self.found_words.grid(row=3, column=0, rowspan=2, columnspan=1, sticky=STICK_ALL_DIRECTION)
+
+    @property
+    def outer_frame(self):
+        return self.__outer_frame
+
+    @property
+    def word_lst_label(self):
+        return self.__word_lst_label
+
+    @property
+    def found_words(self):
+        return self.__found_words
+
 
     def restart_world_lst(self):
         self.found_words.config(state=NORMAL_STATE)
@@ -362,12 +394,29 @@ class WordLst:
 
 class StartButton:
     def __init__(self, frame, time, board):
-        self.time = time
-        self.board = board
-        self.outer_frame = frame
-        self.start_button = tk.Button(self.outer_frame, text=INITIAL_START_TXT, **WIDGET_STYLE, command=self.start)
+        self.__time = time
+        self.__board = board
+        self.__outer_frame = frame
+        self.__start_button = tk.Button(self.outer_frame, text=INITIAL_START_TXT, **WIDGET_STYLE, command=self.start)
         self.start_button.configure(bg="medium sea green")
         self.start_button.grid(row=0, column=2, rowspan=1, columnspan=1, sticky="ewns")
+
+    @property
+    def time(self):
+        return self.__time
+
+    @property
+    def board(self):
+        return self.__board
+
+    @property
+    def outer_frame(self):
+        return self.__outer_frame
+
+    @property
+    def start_button(self):
+        return self.__start_button
+
 
     def start(self):
         self.start_button.configure(text=DURING_GAME_START_TXT, state=DISABLED_STATE)
@@ -377,9 +426,17 @@ class StartButton:
 
 class Rules:
     def __init__(self, frame):
-        self.outer_frame = frame
-        self.rules_button = tk.Button(self.outer_frame, text=RULES_TXT, **WIDGET_STYLE, command=self.rules)
+        self.__outer_frame = frame
+        self.__rules_button = tk.Button(self.outer_frame, text=RULES_TXT, **WIDGET_STYLE, command=self.rules)
         self.rules_button.grid(row=2, column=2, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
+
+    @property
+    def outer_frame(self):
+        return self.__outer_frame
+
+    @property
+    def rules_button(self):
+        return self.__rules_button
 
     def rules(self):
         messagebox.showinfo(RULES_MESSEGE_TITLE, RULES)
@@ -387,18 +444,51 @@ class Rules:
 
 class Submit:
     def __init__(self, frame, time, boggle_logic, word_lst, cuurent_guess, score, board, words):
-        self.words = words
-        self.time = time
+        self.__words = words
+        self.__time = time
         self.__boggle_logic = boggle_logic
-        self.outer_frame = frame
-        self.word_lst = word_lst
-        self.current_guess = cuurent_guess
-        self.score = score
-        self.board = board
-        self.check_button = tk.Button(self.outer_frame, text=SUBMIT_TXT, **WIDGET_STYLE,
+        self.__outer_frame = frame
+        self.__word_lst = word_lst
+        self.__current_guess = cuurent_guess
+        self.__score = score
+        self.__board = board
+        self.__check_button = tk.Button(self.outer_frame, text=SUBMIT_TXT, **WIDGET_STYLE,
                                       command=self.check_complete_word)
         self.check_button.configure(bg="RoyalBlue1")
         self.check_button.grid(row=1, column=2, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
+
+
+    @property
+    def word_lst(self):
+        return self.__word_lst
+
+    @property
+    def words(self):
+        return self.__words
+
+    @property
+    def time(self):
+        return self.__time
+
+    @property
+    def outer_frame(self):
+        return self.__outer_frame
+
+    @property
+    def current_guess(self):
+        return self.__current_guess
+
+    @property
+    def score(self):
+        return self.__score
+
+    @property
+    def board(self):
+        return self.__board
+
+    @property
+    def check_button(self):
+        return self.__check_button
 
     @property
     def logic(self):
@@ -420,7 +510,19 @@ class Submit:
 
 class Image:
     def __init__(self, frame):
-        self.outer_frame = frame
-        self.image = tk.PhotoImage(file=BOGGLE_PHOTO)
-        self.photo_label = tk.Label(self.outer_frame, image=self.image)
+        self.__outer_frame = frame
+        self.__image = tk.PhotoImage(file=BOGGLE_PHOTO)
+        self.__photo_label = tk.Label(self.outer_frame, image=self.image)
         self.photo_label.grid(row=3, column=2, rowspan=1, columnspan=1, sticky=STICK_ALL_DIRECTION)
+
+    @property
+    def outer_frame(self):
+        return self.__outer_frame
+
+    @property
+    def image(self):
+        return self.__image
+
+    @property
+    def photo_label(self):
+        return self.__photo_label
